@@ -1,0 +1,7 @@
+{
+	"root": true,
+	"extends": "cortys",
+	"parserOptions": {
+		"ecmaVersion": 8
+	}
+}
