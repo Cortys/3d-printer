@@ -15,6 +15,8 @@ function requestHandler(f) {
 			res.json(await f(req, res));
 		}
 		catch(e) {
+			console.log(e);
+
 			res.status(400).json({ message: e.message });
 		}
 	};

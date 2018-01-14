@@ -1,6 +1,6 @@
 "use strict";
 
-const axes = ["x", "y", "z"];
+const axes = ["x", "y", "z", "e"];
 const dirs = {
 	N: -1,
 	P: 1
@@ -21,7 +21,8 @@ axes.forEach(a => {
 		document.getElementById(`${a}-${d}`).addEventListener("click", async () => {
 			let x = 0,
 				y = 0,
-				z = 0;
+				z = 0,
+				e = 0;
 
 			const speed = document.getElementById("speed").value;
 			const dist = document.getElementById("distance").value;
@@ -36,11 +37,14 @@ axes.forEach(a => {
 			case "z":
 				z = dir * dist;
 				break;
+			case "e":
+				e = dir * dist;
+				break;
 			default:
 				throw new Error("Invalid axis.");
 			}
 
-			updateState(await (await fetch(`/move-by?x=${x}&y=${y}&z=${z}&e=0&speed=${speed}`, {
+			updateState(await (await fetch(`/move-by?x=${x}&y=${y}&z=${z}&e=${e}&speed=${speed}`, {
 				method: "POST"
 			})).json());
 		});

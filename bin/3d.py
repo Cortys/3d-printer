@@ -13,7 +13,7 @@ import timing
 
 xy_scale = 0.07
 scales = [xy_scale, xy_scale, 0.02, 1]
-motor_pins = [[2, 3], [4, 17], [27, 22], [10, 9]]    #[TAKT,RICHTUNG]
+motor_pins = [[14, 15], [18, 23], [24, 25], [8, 7]]    #[TAKT,RICHTUNG]
 button_pins = [16, 20, 21]
 
 class MotorController:
@@ -43,7 +43,11 @@ class MotorController:
         ySteps = distances[1] / self.scales[1]  #eingabe Y Wert
         zSteps = distances[2] / self.scales[2]    #eingabe Z Wert
         eSteps = distances[3] / self.scales[3]    #eingabe E Wert
-        total_time = math.fsum([distance**2 for distance in distances])**0.5 / (speed / 60)
+
+        if all(distance == 0 for distance in distances[0:3]):
+            total_time = abs(distances[3]) / (speed / 60.0)
+        else:
+            total_time = math.fsum([distance**2 for distance in distances[0:3]])**0.5 / (speed / 60.0)
 
         return [self.rotateCoordinates(xSteps, ySteps) + [zSteps, eSteps], total_time]
 
@@ -56,7 +60,7 @@ class MotorController:
         for i in range(len(self.motors)): #Richtung bestimmen
             if steps[i] > 0:    #Poitive Richtung
                 GPIO.output(self.motors[i][1], 0)
-            else:                #Negative Richtung
+            elif steps[i] < 0:            #Negative Richtung
                 GPIO.output(self.motors[i][1], 1)
                 steps[i] *= -1
 
@@ -110,7 +114,7 @@ class MotorController:
 
         print("info reference x")
         self._move([-1, 0, 0, 0], 600, buttonPushed(self.buttons[0]))
-        self.move([5, 0, 0, 0], 3000)
+        self.move([10, 0, 0, 0], 3000)
 
 #Hauptprogramm
 def main():
