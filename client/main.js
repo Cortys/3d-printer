@@ -19,10 +19,10 @@ function updateState({ position, absolutePosition }) {
 axes.forEach(a => {
 	Object.entries(dirs).forEach(([d, dir]) => {
 		document.getElementById(`${a}-${d}`).addEventListener("click", async () => {
-			let x = 0,
+			let e = 0,
+				x = 0,
 				y = 0,
-				z = 0,
-				e = 0;
+				z = 0;
 
 			const speed = document.getElementById("speed").value;
 			const dist = document.getElementById("distance").value;
@@ -71,5 +71,17 @@ document.getElementById("abs").addEventListener("click", async () => {
 
 	updateState(await (await fetch(`/move-to?x=${x}&y=${y}&z=${z}&e=0&speed=${speed}`, {
 		method: "POST"
+	})).json());
+});
+
+document.getElementById("execCode").addEventListener("click", async () => {
+	const code = document.getElementById("gcode").value;
+
+	updateState(await (await fetch("/exec-code", {
+		method: "POST",
+		body: JSON.stringify({ code }),
+		headers: {
+			"content-type": "application/json"
+		}
 	})).json());
 });

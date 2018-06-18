@@ -16,9 +16,6 @@ class Point {
 			this.y = +y;
 			this.z = +z;
 		}
-
-		if(typeof this.x !== "number" || typeof this.y !== "number" || typeof this.z !== "number")
-			throw new TypeError("Compontents of points have to be numbers.");
 	}
 
 	scale(s) {
@@ -42,6 +39,14 @@ class Point {
 			this.x - p.x,
 			this.y - p.y,
 			this.z - p.z
+		);
+	}
+
+	replaceNaNs(point) {
+		return new Point(
+			(isNaN(this.x) ? point : this).x,
+			(isNaN(this.y) ? point : this).y,
+			(isNaN(this.z) ? point : this).z,
 		);
 	}
 

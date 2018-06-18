@@ -13,8 +13,9 @@ import timing
 
 xy_scale = 0.07
 scales = [xy_scale, xy_scale, 0.02, 1]
-motor_pins = [[14, 15], [18, 23], [24, 25], [8, 7]]    #[TAKT,RICHTUNG]
-button_pins = [16, 20, 21]
+motor_pins = [[17, 4], [22, 27], [23, 24], [25, 12]]    # XY1, XY1, Z, E [TAKT,RICHTUNG]
+button_pins = [16, 20, 21]                              # X, Y ,Z ReferenzPins
+heat_pins = [19, 26]                                    # Heat, Temp
 
 class MotorController:
     def __init__(self, motors, buttons, scales):
@@ -105,16 +106,16 @@ class MotorController:
         #     timing.delayMicroseconds(20000)
 
         print("info reference z")
-        self._move([0, 0, 1, 0], 600, buttonPushed(self.buttons[2]))
-        self.move([0, 0, -5, 0], 1500)
-
-        print("info reference y")
-        self._move([0, 1, 0, 0], 600, buttonPushed(self.buttons[1]))
-        self.move([0, -5, 0, 0], 3000)
+        self._move([0, 0, 1, 0], 2000, buttonPushed(self.buttons[2]))
+        self.move([0, 0, -5, 0], 2000)
 
         print("info reference x")
-        self._move([-1, 0, 0, 0], 600, buttonPushed(self.buttons[0]))
-        self.move([10, 0, 0, 0], 3000)
+        self._move([-1, 0, 0, 0], 2000, buttonPushed(self.buttons[0]))
+        self.move([10, 0, 0, 0], 2000)
+
+        print("info reference y")
+        self._move([0, 1, 0, 0], 2000, buttonPushed(self.buttons[1]))
+        self.move([0, -5, 0, 0], 2000)
 
 #Hauptprogramm
 def main():

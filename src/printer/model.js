@@ -51,7 +51,7 @@ function isValidRefPos({ x, y, z }) {
 }
 
 const [checkedAbsPos2refPos, checkedRelPos2refPos] = [absPos2refPos, relPos2refPos].map(f => pos => {
-	const refPos = f(pos);
+	const refPos = f(pos).replaceNaNs(state.pos);
 
 	if(!isValidRefPos(refPos))
 		throw new RangeError(`Position ${refPos} is outside of the printable volume.`);
@@ -61,23 +61,25 @@ const [checkedAbsPos2refPos, checkedRelPos2refPos] = [absPos2refPos, relPos2refP
 
 module.exports = {
 	moveTo(pos) {
-		pos = new Point(pos);
-
 		const oldPos = state.pos;
 
+		pos = new Point(pos);
+
 		state.pos = checkedAbsPos2refPos(pos);
+
+		console.log("moveTo", oldPos, state.pos, pos);
 
 		return refPos2mmPos(state.pos.diff(oldPos));
 	},
 
 	moveBy(pos) {
-		pos = new Point(pos);
-
 		const oldPos = state.pos;
+
+		pos = new Point(pos);
 
 		state.pos = checkedRelPos2refPos(pos);
 
-		console.log(oldPos, state.pos, pos);
+		console.log("moveBy", oldPos, state.pos, pos);
 
 		return refPos2mmPos(state.pos.diff(oldPos));
 	},

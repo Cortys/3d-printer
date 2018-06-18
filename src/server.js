@@ -2,10 +2,14 @@
 
 const path = require("path");
 const express = require("express");
+const bodyParser = require("body-parser");
 
 const printer = require("./printer");
+const gcode = require("./gcode");
 
 const app = express();
+
+app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "..", "client")));
 
@@ -41,6 +45,12 @@ app.get("/origin", requestHandler(() => printer.orign));
 app.get("/position", requestHandler(() => printer.position));
 
 app.get("/absolute-position", requestHandler(() => printer.absolutePosition));
+
+app.post("/exec-code", requestHandler(async req => {
+	await gcode.executeCode(req.body.code);
+
+	return printer.state;
+}));
 
 module.exports = {
 	start() {

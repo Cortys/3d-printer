@@ -1,15 +1,19 @@
 {
     "name": "3d-printer",
     "version": "0.1.0",
-	"description": "3D Printer software.",
-    "authors": ["Oliver Rehburg", "Clemens Damke"],
+    "description": "3D Printer software.",
+    "authors": [
+        "Oliver Rehburg",
+        "Clemens Damke"
+    ],
     "license": "MIT",
     "dependencies": {
-        "express": "4.x",
+        "body-parser": "1.18.3",
+        "express": "^4.16.3",
         "gcode-interpreter": "2.0.2"
     },
     "devDependencies": {
-        "eslint": "4.13.1",
+        "eslint": "^4.19.1",
         "eslint-config-cortys": "1.x"
     }
 }
